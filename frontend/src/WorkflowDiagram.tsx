@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { motion, type Variants } from 'framer-motion'
+import { useState, useRef } from 'react'
+import { motion, type Variants, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import {
   ArrowDown,
   Database,
@@ -39,6 +39,7 @@ export default function WorkflowDiagram() {
     }
   }
 
+  // ── Gyroscopic 3D tilt node ──
   const Node = ({
     id,
     icon: Icon,
@@ -57,12 +58,30 @@ export default function WorkflowDiagram() {
     latency?: string
   }) => {
     const isSelected = activeStage === id
+    const cardRef = useRef<HTMLDivElement>(null)
+    const mouseX = useMotionValue(0)
+    const mouseY = useMotionValue(0)
+
+    const rotateX = useSpring(useTransform(mouseY, [-1, 1], [10, -10]), { stiffness: 80, damping: 20 })
+    const rotateY = useSpring(useTransform(mouseX, [-1, 1], [-10, 10]), { stiffness: 80, damping: 20 })
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+      const rect = cardRef.current?.getBoundingClientRect()
+      if (!rect) return
+      mouseX.set(((e.clientX - rect.left) / rect.width) * 2 - 1)
+      mouseY.set(((e.clientY - rect.top) / rect.height) * 2 - 1)
+    }
+    const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
 
     return (
       <motion.div
+        ref={cardRef}
         variants={item}
-        whileHover={{ scale: 1.035, y: -4 }}
-        whileTap={{ scale: 0.98 }}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 800 }}
+        whileHover={{ scale: 1.032, z: 18 }}
+        whileTap={{ scale: 0.97 }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         onClick={() => setActiveStage(isSelected ? null : id)}
         className={`glass-card node-card-3d ${isHighlight ? 'highlight-node-3d' : ''} ${isSelected ? 'active-selected-node' : ''}`}
       >
@@ -99,6 +118,13 @@ export default function WorkflowDiagram() {
 
         {/* 3D Corner Accent */}
         <div className="node-3d-corner" />
+
+        {/* Depth face — gives the card a 3D extruded bottom edge */}
+        <div style={{
+          position: 'absolute', inset: 0, borderRadius: 16,
+          background: 'linear-gradient(180deg, transparent 70%, rgba(0,240,181,0.04) 100%)',
+          transform: 'translateZ(-6px)', pointerEvents: 'none'
+        }} />
       </motion.div>
     )
   }
@@ -117,6 +143,12 @@ export default function WorkflowDiagram() {
 
   return (
     <div className={`workflow-container-3d mode-${viewMode}`}>
+      {/* ── Animated Background Canvas ── */}
+      <div className="workflow-bg-canvas">
+        <div className="wf-orb wf-orb-1" />
+        <div className="wf-orb wf-orb-2" />
+        <div className="wf-orb wf-orb-3" />
+      </div>
       {/* 3D Perspective Controls */}
       <div className="workflow-view-controls">
         <div className="controls-label">
@@ -152,6 +184,7 @@ export default function WorkflowDiagram() {
         variants={container}
         initial="hidden"
         animate="visible"
+        style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Stage 1: Document Ingestion */}
         <Node

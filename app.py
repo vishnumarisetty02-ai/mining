@@ -1976,6 +1976,9 @@ def render_visual_system(active_page: str):
         [data-testid="stCaptionContainer"] p { color: var(--geo-text-muted); }
 
         .stApp {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
             background:
                 radial-gradient(ellipse 90% 50% at 85% -5%, rgba(0, 240, 181, 0.075), transparent 60%),
                 radial-gradient(ellipse 70% 40% at 5% 25%, rgba(0, 216, 246, 0.055), transparent 55%),
@@ -1983,6 +1986,31 @@ def render_visual_system(active_page: str):
             background-size: 180% 180%, 170% 170%, 100% 100%;
             background-position: 0% 0%, 100% 100%, 0% 0%;
             animation: ambient-drift 48s ease-in-out infinite alternate;
+        }
+        .stApp::before,
+        .stApp::after {
+            content: "";
+            position: absolute;
+            inset: auto;
+            width: 42rem;
+            height: 42rem;
+            border-radius: 50%;
+            filter: blur(84px);
+            opacity: 0.3;
+            z-index: -1;
+            pointer-events: none;
+            animation: glow-orb 20s ease-in-out infinite alternate;
+        }
+        .stApp::before {
+            top: -12rem;
+            right: -8rem;
+            background: radial-gradient(circle, rgba(0, 240, 181, 0.36), rgba(0, 240, 181, 0.04) 55%, transparent 72%);
+        }
+        .stApp::after {
+            bottom: -14rem;
+            left: -10rem;
+            background: radial-gradient(circle, rgba(0, 216, 246, 0.26), rgba(0, 216, 246, 0.05) 52%, transparent 70%);
+            animation-delay: 2.5s;
         }
 
         /* Top Header */
@@ -2512,6 +2540,11 @@ def render_visual_system(active_page: str):
         @keyframes ambient-drift {
             0% { background-position: 0% 0%, 100% 100%, 0% 0%; }
             100% { background-position: 100% 70%, 0% 20%, 0% 0%; }
+        }
+        @keyframes glow-orb {
+            0% { transform: translate3d(0, 0, 0) scale(0.94); opacity: 0.22; }
+            50% { transform: translate3d(-16px, 16px, 0) scale(1.05); opacity: 0.42; }
+            100% { transform: translate3d(18px, -18px, 0) scale(1.12); opacity: 0.3; }
         }
         @keyframes hero-aura-drift {
             0% { background-position: 0% 50%, 100% 50%, 0% 0%; }
