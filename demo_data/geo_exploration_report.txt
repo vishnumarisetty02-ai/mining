@@ -1,0 +1,29 @@
+
+GEOLOGICAL EXPLORATION REPORT
+==============================
+Project: Gamma Block Exploration
+Period: FY 2024-25
+Subsidiary: Central Mine Planning & Design Institute (CMPDI)
+
+1. INTRODUCTION
+   Borehole drilling was conducted across the Gamma Block in FY 2024-25.
+   Total borehole depth: 1250 m across 8 boreholes.
+
+2. RESERVE ESTIMATION
+   Geological reserve is 85.50 MT as per FY 2024-25 assessment.
+   Previous reserve estimate (FY 2023-24): 88.00 MT.
+
+3. COAL QUALITY
+   GCV is 4350 kcal/kg (average across seams sampled).
+   Ash content: 28.5%
+   Moisture: 7.2%
+
+4. MINING OPERATIONS
+   Overburden removal is 12.8 MCum for the period.
+   Stripping ratio is 3.2 for the block.
+   Production of coal was 3.80 MT for FY 2024-25.
+   Target was 4.00 MT for FY 2024-25.
+
+5. RECOMMENDATIONS
+   Based on current reserve trends, extraction plan revision is recommended.
+   Safety monitoring at depth (>200 m) must be reinforced.

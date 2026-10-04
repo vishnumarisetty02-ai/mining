@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --geo-canvas: #070B0E;
+  --geo-panel: #0E1620;
+  --geo-card: rgba(14, 23, 33, 0.82);
+  --geo-card-hover: rgba(19, 32, 45, 0.94);
+  --geo-border: rgba(255, 255, 255, 0.08);
+  --geo-border-glow: rgba(0, 240, 181, 0.35);
+  
+  --geo-emerald: #00F0B5;
+  --geo-cyan: #00D8F6;
+  --geo-copper: #F5BA6B;
+  --geo-crimson: #FF4D5E;
+  --geo-amber: #FFB238;
+
+  --geo-text-head: #F3F7FA;
+  --geo-text-body: #C2D1DC;
+  --geo-text-muted: #7E94A4;
+
+  --geo-shadow-card: 0 12px 32px -4px rgba(0, 0, 0, 0.42), 0 4px 12px -2px rgba(0, 0, 0, 0.25);
+  --geo-shadow-hover: 0 20px 40px -6px rgba(0, 240, 181, 0.14), 0 8px 24px -4px rgba(0, 0, 0, 0.45);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--geo-canvas);
+  color: var(--geo-text-body);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+code, pre, .mono-font, .fact-id-chip, .hash-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #080D12;
+}
+::-webkit-scrollbar-thumb {
+  background: #1C2B38;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2E4557;
+}

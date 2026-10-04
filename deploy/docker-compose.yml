@@ -1,0 +1,87 @@
+# Docker Compose for GeoMine development environment
+# R8: Secrets via environment variables only
+
+services:
+  # ── PostgreSQL 16 with pgvector ───────────────────────────────────
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: geomine-postgres
+    environment:
+      POSTGRES_DB: geomine
+      POSTGRES_USER: geomine
+      POSTGRES_PASSWORD: geomine_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U geomine"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis 7 (task queue for arq) ──────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: geomine-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── MinIO (S3-compatible document store) ──────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: geomine-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Ollama (local LLM inference) ──────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: geomine-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  # ── OpenTelemetry Collector ───────────────────────────────────────
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: geomine-otel
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+
+  # ── Grafana ───────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    container_name: geomine-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  postgres_data:
+  minio_data:
+  ollama_data:
+  grafana_data:

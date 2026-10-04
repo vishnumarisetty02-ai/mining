@@ -1,0 +1,666 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   3D WORKFLOW & SLOW-MOTION PIPELINE ANIMATIONS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.workflow-container-3d {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0 3.5rem;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Perspective Modes */
+.workflow-container-3d.mode-3d-perspective .workflow-stage-viewport {
+  transform: rotateX(8deg) translateZ(0);
+}
+
+.workflow-container-3d.mode-3d-isometric .workflow-stage-viewport {
+  transform: rotateX(18deg) rotateY(-8deg) rotateZ(3deg) scale(0.96);
+}
+
+.workflow-container-3d.mode-flat .workflow-stage-viewport {
+  transform: none;
+}
+
+/* 3D Viewport Controls */
+.workflow-view-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 780px;
+  margin-bottom: 2rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 14px;
+  background: rgba(14, 23, 33, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.controls-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--geo-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.controls-label .accent-icon {
+  color: var(--geo-emerald);
+}
+
+.view-mode-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--geo-text-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-mode-toggle:hover {
+  background: rgba(0, 240, 181, 0.1);
+  border-color: rgba(0, 240, 181, 0.3);
+  color: #fff;
+}
+
+.btn-mode-toggle.active {
+  background: linear-gradient(135deg, rgba(0, 240, 181, 0.2), rgba(0, 216, 246, 0.2));
+  border-color: var(--geo-emerald);
+  color: var(--geo-emerald);
+  box-shadow: 0 0 14px rgba(0, 240, 181, 0.25);
+}
+
+/* Stage Viewport */
+.workflow-stage-viewport {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 780px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 3D Node Cards */
+.node-card-3d {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.2rem 1.8rem;
+  width: 100%;
+  max-width: 580px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(16, 26, 38, 0.88) 0%, rgba(9, 15, 22, 0.94) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  cursor: pointer;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.node-card-3d:hover {
+  border-color: rgba(0, 240, 181, 0.45);
+  box-shadow: 0 22px 48px -6px rgba(0, 240, 181, 0.22), 0 0 20px rgba(0, 240, 181, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px) translateZ(12px);
+}
+
+.node-card-3d.highlight-node-3d {
+  background: linear-gradient(135deg, rgba(0, 240, 181, 0.08) 0%, rgba(14, 25, 36, 0.94) 100%);
+  border-color: rgba(0, 240, 181, 0.3);
+  box-shadow: 0 16px 40px -8px rgba(0, 240, 181, 0.18), inset 0 0 16px rgba(0, 240, 181, 0.06);
+}
+
+.node-card-3d.active-selected-node {
+  border-color: var(--geo-cyan);
+  box-shadow: 0 0 30px rgba(0, 216, 246, 0.3), inset 0 0 20px rgba(0, 216, 246, 0.12);
+}
+
+/* Slow Motion Shimmer Sweep */
+.card-3d-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), rgba(0, 240, 181, 0.12), transparent);
+  transform: skewX(-25deg);
+  animation: slowShimmerSweep 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes slowShimmerSweep {
+  0% { left: -100%; }
+  35% { left: 180%; }
+  100% { left: 180%; }
+}
+
+/* 3D Node Icon */
+.node-icon-3d-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.node-icon-3d {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--geo-text-head);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.highlight-node-3d .node-icon-3d {
+  background: linear-gradient(135deg, rgba(0, 240, 181, 0.25), rgba(0, 216, 246, 0.12));
+  border-color: rgba(0, 240, 181, 0.5);
+  color: var(--geo-emerald);
+  box-shadow: 0 0 20px rgba(0, 240, 181, 0.35);
+}
+
+.node-card-3d:hover .node-icon-3d {
+  transform: scale(1.08) rotate(3deg);
+  color: var(--geo-emerald);
+  border-color: rgba(0, 240, 181, 0.6);
+}
+
+/* Pulse Beacon */
+.pulse-beacon {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 10px;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pulse-beacon-ping {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--geo-emerald);
+  opacity: 0.75;
+  animation: slowBeaconPing 2.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.pulse-beacon-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--geo-emerald);
+  box-shadow: 0 0 8px var(--geo-emerald);
+}
+
+@keyframes slowBeaconPing {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  70% { transform: scale(2.8); opacity: 0; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* Node Text */
+.node-text-3d {
+  flex: 1;
+  min-width: 0;
+}
+
+.node-header-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.node-text-3d h3 {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--geo-text-head);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.node-tag-pill {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(0, 240, 181, 0.12);
+  border: 1px solid rgba(0, 240, 181, 0.3);
+  color: var(--geo-emerald);
+  letter-spacing: 0.06em;
+}
+
+.node-subtitle-text {
+  font-size: 0.78rem;
+  color: var(--geo-text-muted);
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+.node-telemetry-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.68rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--geo-text-muted);
+}
+
+.telemetry-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.telemetry-icon {
+  color: var(--geo-copper);
+}
+
+.telemetry-status {
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(0, 240, 181, 0.08);
+  color: var(--geo-emerald);
+  font-weight: 700;
+}
+
+.node-3d-corner {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  border-right: 2px solid rgba(0, 240, 181, 0.4);
+  border-bottom: 2px solid rgba(0, 240, 181, 0.4);
+  border-bottom-right-radius: 16px;
+  pointer-events: none;
+}
+
+/* Flow Connectors & Slow Energy Beams */
+.flow-connector-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.6rem 0;
+}
+
+.energy-beam-line {
+  position: relative;
+  width: 2px;
+  height: 38px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 240, 181, 0.35) 50%, rgba(255, 255, 255, 0.1) 100%);
+  overflow: hidden;
+}
+
+.energy-pulse-particle {
+  position: absolute;
+  top: -10px;
+  left: -2px;
+  width: 6px;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, transparent, #00F0B5, #ffffff);
+  box-shadow: 0 0 10px #00F0B5, 0 0 20px #00D8F6;
+  animation: slowEnergyDrop 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+@keyframes slowEnergyDrop {
+  0% { top: -16px; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.arrow-down-3d {
+  color: var(--geo-emerald);
+  margin-top: 0.15rem;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 181, 0.6));
+  animation: slowArrowBob 3s ease-in-out infinite;
+}
+
+@keyframes slowArrowBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+.connector-label-chip {
+  position: absolute;
+  right: -130px;
+  top: 10px;
+  font-size: 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--geo-text-muted);
+  background: rgba(14, 23, 33, 0.85);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+}
+
+/* Split Branch Nodes */
+.split-branch-container {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.split-branch-lines, .join-branch-lines {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 600px;
+  height: 32px;
+  position: relative;
+}
+
+.branch-line, .join-line {
+  position: relative;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0, 240, 181, 0.4), rgba(0, 216, 246, 0.2));
+  overflow: hidden;
+}
+
+.branch-left { transform: rotate(22deg); }
+.branch-right { transform: rotate(-22deg); }
+.join-branch-lines .branch-left { transform: rotate(-22deg); }
+.join-branch-lines .branch-right { transform: rotate(22deg); }
+
+.split-nodes-3d {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.split-nodes-3d .node-card-3d {
+  flex-direction: column;
+  text-align: center;
+  padding: 1.25rem 1rem;
+  gap: 0.85rem;
+}
+
+.split-nodes-3d .node-header-line {
+  justify-content: center;
+}
+
+.split-nodes-3d .node-telemetry-row {
+  justify-content: center;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   3D GEOLOGICAL MINE DIGITAL TWIN WRAPPER
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.workflow-subview-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(14, 23, 33, 0.7);
+  padding: 0.35rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.subview-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--geo-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.subview-tab-btn:hover {
+  color: #fff;
+}
+
+.subview-tab-btn.active {
+  background: linear-gradient(135deg, rgba(0, 240, 181, 0.2), rgba(0, 216, 246, 0.15));
+  border: 1px solid rgba(0, 240, 181, 0.4);
+  color: var(--geo-emerald);
+  box-shadow: 0 4px 16px rgba(0, 240, 181, 0.2);
+}
+
+.pipeline-banner-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1.4rem;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  background: rgba(0, 240, 181, 0.05);
+  border: 1px solid rgba(0, 240, 181, 0.2);
+  font-size: 0.8rem;
+  color: var(--geo-text-body);
+}
+
+.banner-left, .banner-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 3D Mine Container */
+.mine-3d-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.mine-3d-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  background: rgba(14, 23, 33, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.mine-3d-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--geo-text-head);
+  letter-spacing: -0.02em;
+  margin: 0.35rem 0 0.2rem;
+}
+
+.mine-3d-subtitle {
+  font-size: 0.82rem;
+  color: var(--geo-text-muted);
+}
+
+.mine-3d-controls-bar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-control-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--geo-text-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-control-pill:hover {
+  background: rgba(0, 240, 181, 0.1);
+  border-color: rgba(0, 240, 181, 0.3);
+  color: #fff;
+}
+
+.btn-control-pill.active {
+  background: linear-gradient(135deg, rgba(0, 240, 181, 0.25), rgba(0, 216, 246, 0.2));
+  border-color: var(--geo-emerald);
+  color: var(--geo-emerald);
+  box-shadow: 0 0 16px rgba(0, 240, 181, 0.25);
+}
+
+.mine-3d-canvas-box {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  border-radius: 20px;
+  background: radial-gradient(circle at center, rgba(14, 25, 36, 0.95) 0%, rgba(7, 11, 15, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.7), inset 0 0 40px rgba(0, 240, 181, 0.04);
+  overflow: hidden;
+}
+
+.canvas-badge-overlay-top {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.canvas-badge-overlay-bottom {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.badge-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(14, 23, 33, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.72rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--geo-text-body);
+  backdrop-filter: blur(10px);
+}
+
+.badge-help {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background: rgba(7, 11, 15, 0.88);
+  border: 1px solid rgba(0, 240, 181, 0.25);
+  color: var(--geo-emerald);
+  font-size: 0.74rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* 3D Tooltips & Marker Tags */
+.mine-3d-tooltip {
+  background: rgba(10, 18, 26, 0.95);
+  border: 1px solid var(--geo-emerald);
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  color: #fff;
+  font-size: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0, 240, 181, 0.35);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tooltip-title {
+  font-weight: 800;
+  color: var(--geo-emerald);
+  margin-bottom: 0.15rem;
+}
+
+.tooltip-sub, .tooltip-stat {
+  font-size: 0.68rem;
+  color: var(--geo-text-muted);
+}
+
+.sensor-tag-marker {
+  background: rgba(14, 23, 33, 0.9);
+  border: 1px solid rgba(0, 216, 246, 0.4);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.65rem;
+  color: var(--geo-cyan);
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.sensor-tag-marker.marker-hovered {
+  border-color: var(--geo-emerald);
+  box-shadow: 0 0 16px rgba(0, 240, 181, 0.45);
+  transform: scale(1.1);
+}
+
+.marker-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.marker-pulse {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--geo-cyan);
+  box-shadow: 0 0 6px var(--geo-cyan);
+}
+
+.marker-detail {
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.6rem;
+  color: var(--geo-text-muted);
+}
