@@ -12,7 +12,7 @@
 # 5. Mining Domain Ontology - maps terms to domain entities/metrics
 # 6. Evidence Trace - answer -> fact -> source document -> page
 # 7. Topic Evolution - topic frequencies by reporting period
-# 8. Human approval workflow
+# 8. Human approval workflow 
 # 9. Automated DOCX/PDF report generation
 # 10. Optional local Ollama wording model
 #
