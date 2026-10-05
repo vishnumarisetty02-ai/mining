@@ -2557,7 +2557,7 @@ def render_visual_system(active_page: str):
             border-top-color: var(--geo-emerald) !important;
         }
 
-        /* 3D Slow-Motion Gyroscopic & Polyhedron Engine */
+        /* Slow 3D open-pit mine digital twin */
         .mine-hero-mark {
             position: relative;
             flex: 0 0 240px;
@@ -2573,103 +2573,108 @@ def render_visual_system(active_page: str):
             animation: scene-float 52s ease-in-out infinite alternate;
             will-change: transform;
         }
-        .mine-orbit {
+        .mine-open-pit {
             position: absolute;
             left: 50%;
             top: 50%;
-            border-radius: 50%;
-            transform-style: preserve-3d;
-            pointer-events: none;
-        }
-        .orbit-outer {
             width: 210px;
-            height: 105px;
-            margin-left: -105px;
-            margin-top: -52px;
-            border: 1px solid rgba(0, 240, 181, 0.38);
-            box-shadow: 0 0 16px rgba(0, 240, 181, 0.15), inset 0 0 12px rgba(0, 240, 181, 0.1);
-            animation: orbit-spin-1 56s linear infinite;
-        }
-        .orbit-mid {
-            width: 170px;
-            height: 85px;
-            margin-left: -85px;
-            margin-top: -42px;
-            border: 1px solid rgba(0, 216, 246, 0.35);
-            box-shadow: 0 0 14px rgba(0, 216, 246, 0.12);
-            animation: orbit-spin-2 68s linear infinite reverse;
-        }
-        .orbit-inner {
-            width: 130px;
-            height: 65px;
-            margin-left: -65px;
-            margin-top: -32px;
-            border: 1px dashed rgba(245, 186, 107, 0.45);
-            animation: orbit-spin-3 82s linear infinite;
-        }
-        .orbit-sat {
-            position: absolute;
-            top: -5px;
-            left: 50%;
-            width: 9px;
-            height: 9px;
-            margin-left: -4.5px;
-            border-radius: 50%;
-        }
-        .sat-emerald {
-            background: #00F0B5;
-            box-shadow: 0 0 10px #00F0B5, 0 0 22px rgba(0,240,181,0.8);
-        }
-        .sat-cyan {
-            background: #00D8F6;
-            box-shadow: 0 0 10px #00D8F6, 0 0 20px rgba(0,216,246,0.8);
-        }
-        .sat-copper {
-            background: #F5BA6B;
-            box-shadow: 0 0 8px #F5BA6B, 0 0 16px rgba(245,186,107,0.7);
-        }
-        .mine-polyhedron {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 86px;
-            height: 106px;
-            margin-left: -43px;
-            margin-top: -53px;
+            height: 172px;
+            margin: -86px 0 0 -105px;
             transform-style: preserve-3d;
-            animation: polyhedron-tumble 72s linear infinite;
+            animation: pit-digital-twin 48s ease-in-out infinite alternate;
         }
-        .facet {
+        .pit-bench {
             position: absolute;
-            inset: 0;
-            border-radius: 14px;
-            backdrop-filter: blur(5px);
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(0, 240, 181, 0.48);
+            border-radius: 50%;
+            background:
+                radial-gradient(ellipse, transparent 34%, rgba(5, 13, 20, 0.94) 36%, rgba(23, 54, 56, 0.9) 42%, rgba(245, 186, 107, 0.24) 45%, rgba(0, 240, 181, 0.38) 48%, rgba(8, 22, 28, 0.82) 54%, transparent 57%),
+                linear-gradient(145deg, rgba(20, 50, 58, 0.34), rgba(5, 13, 20, 0.14));
+            box-shadow: inset 0 2px 12px rgba(0, 240, 181, 0.16), 0 0 18px rgba(0, 216, 246, 0.09);
+            transform-style: preserve-3d;
         }
-        .facet-1 {
-            clip-path: polygon(50% 0%, 100% 30%, 82% 100%, 18% 100%, 0% 30%);
-            background: linear-gradient(145deg, rgba(0, 240, 181, 0.48), rgba(0, 216, 246, 0.28) 50%, rgba(245, 186, 107, 0.45));
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: inset 0 0 20px rgba(0, 240, 181, 0.35), 0 0 32px rgba(0, 240, 181, 0.25);
-            transform: translateZ(20px) rotateY(16deg);
+        .pit-bench-1 { width: 200px; height: 142px; margin: -71px 0 0 -100px; transform: translateZ(0); }
+        .pit-bench-2 { width: 174px; height: 124px; margin: -62px 0 0 -87px; transform: translateZ(-7px); border-color: rgba(0, 216, 246, 0.3); }
+        .pit-bench-3 { width: 148px; height: 106px; margin: -53px 0 0 -74px; transform: translateZ(-14px); border-color: rgba(0, 240, 181, 0.28); }
+        .pit-bench-4 { width: 122px; height: 88px; margin: -44px 0 0 -61px; transform: translateZ(-21px); border-color: rgba(0, 216, 246, 0.26); }
+        .pit-bench-5 { width: 96px; height: 70px; margin: -35px 0 0 -48px; transform: translateZ(-28px); border-color: rgba(245, 186, 107, 0.36); }
+        .pit-bench-6 { width: 70px; height: 52px; margin: -26px 0 0 -35px; transform: translateZ(-35px); border-color: rgba(245, 186, 107, 0.46); }
+        .pit-floor {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 52px;
+            height: 38px;
+            margin: -19px 0 0 -26px;
+            border: 1px solid rgba(0, 240, 181, 0.72);
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(0, 240, 181, 0.62), rgba(0, 216, 246, 0.18) 42%, rgba(5, 14, 20, 0.9) 74%);
+            box-shadow: 0 0 22px rgba(0, 240, 181, 0.4), inset 0 0 12px rgba(0, 216, 246, 0.32);
+            transform: translateZ(-40px);
+            animation: pit-core-pulse 10s ease-in-out infinite alternate;
         }
-        .facet-2 {
-            clip-path: polygon(50% 0%, 100% 30%, 82% 100%, 18% 100%, 0% 30%);
-            background: linear-gradient(135deg, rgba(245, 186, 107, 0.42), rgba(0, 240, 181, 0.24) 60%, rgba(0, 216, 246, 0.38));
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            transform: translateZ(-20px) rotateY(-16deg) rotateX(180deg);
+        .pit-survey-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 222px;
+            height: 82px;
+            margin: -41px 0 0 -111px;
+            border: 1px dashed rgba(0, 216, 246, 0.42);
+            border-radius: 50%;
+            transform: rotateX(68deg) rotateZ(-18deg);
+            animation: pit-survey-scan 54s linear infinite;
         }
-        .facet-core {
+        .pit-survey-orbit::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--geo-copper);
+            box-shadow: 0 0 12px rgba(245, 186, 107, 0.9), 0 0 28px rgba(245, 186, 107, 0.45);
+        }
+        .pit-scan-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 190px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 181, 0.7), rgba(0, 216, 246, 0.88), transparent);
+            box-shadow: 0 0 10px rgba(0, 216, 246, 0.45);
+            transform: translate(-50%, -50%) rotate(-28deg) translateZ(8px);
+            animation: pit-lidar-scan 12s ease-in-out infinite alternate;
+        }
+        .pit-caption {
             position: absolute;
             left: 50%;
-            top: 50%;
-            width: 26px;
-            height: 26px;
-            margin-left: -13px;
-            margin-top: -13px;
+            bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            width: max-content;
+            padding: 0.35rem 0.6rem;
+            border: 1px solid rgba(0, 240, 181, 0.18);
+            border-radius: 999px;
+            background: rgba(5, 13, 20, 0.72);
+            color: rgba(210, 231, 232, 0.78);
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transform: translateX(-50%) translateZ(20px);
+            backdrop-filter: blur(10px);
+        }
+        .pit-caption i {
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: radial-gradient(circle, #FFFFFF 0%, #00F0B5 55%, #00D8F6 100%);
-            box-shadow: 0 0 24px #00F0B5, 0 0 48px rgba(0,240,181,0.65);
-            animation: core-pulse 12s ease-in-out infinite alternate;
+            background: var(--geo-emerald);
+            box-shadow: 0 0 9px rgba(0, 240, 181, 0.8);
         }
         .mine-sparkle {
             position: absolute;
@@ -2718,22 +2723,22 @@ def render_visual_system(active_page: str):
             50% { transform: translateY(-9px) rotateX(-2deg) rotateY(4deg); }
             100% { transform: translateY(2px) rotateX(3deg) rotateY(-2deg); }
         }
-        @keyframes orbit-spin-1 {
-            0% { transform: rotateX(68deg) rotateZ(0deg); }
-            100% { transform: rotateX(68deg) rotateZ(360deg); }
+        @keyframes pit-digital-twin {
+            0% { transform: rotateX(57deg) rotateZ(-17deg) translateY(0); }
+            50% { transform: rotateX(63deg) rotateZ(2deg) translateY(-5px); }
+            100% { transform: rotateX(57deg) rotateZ(19deg) translateY(2px); }
         }
-        @keyframes orbit-spin-2 {
-            0% { transform: rotateX(55deg) rotateY(25deg) rotateZ(0deg); }
-            100% { transform: rotateX(55deg) rotateY(25deg) rotateZ(360deg); }
+        @keyframes pit-survey-scan {
+            from { transform: rotateX(68deg) rotateZ(-18deg); }
+            to { transform: rotateX(68deg) rotateZ(342deg); }
         }
-        @keyframes orbit-spin-3 {
-            0% { transform: rotateX(72deg) rotateY(-30deg) rotateZ(0deg); }
-            100% { transform: rotateX(72deg) rotateY(-30deg) rotateZ(360deg); }
+        @keyframes pit-lidar-scan {
+            from { opacity: 0.12; transform: translate(-58%, -50%) rotate(-28deg) translateZ(8px); }
+            to { opacity: 0.72; transform: translate(-42%, -50%) rotate(-28deg) translateZ(8px); }
         }
-        @keyframes polyhedron-tumble {
-            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-            50% { transform: rotateX(180deg) rotateY(180deg) rotateZ(90deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        @keyframes pit-core-pulse {
+            from { box-shadow: 0 0 14px rgba(0, 240, 181, 0.25), inset 0 0 8px rgba(0, 216, 246, 0.2); }
+            to { box-shadow: 0 0 30px rgba(0, 240, 181, 0.58), inset 0 0 16px rgba(0, 216, 246, 0.5); }
         }
         @keyframes core-pulse {
             0% { transform: scale(0.82); opacity: 0.65; }
@@ -2825,20 +2830,18 @@ def render_visual_system(active_page: str):
           </div>
           <div class="mine-hero-mark" aria-hidden="true">
             <div class="mine-3d-scene">
-              <div class="mine-orbit orbit-outer">
-                <div class="orbit-sat sat-emerald"></div>
+              <div class="mine-open-pit">
+                <span class="pit-bench pit-bench-1"></span>
+                <span class="pit-bench pit-bench-2"></span>
+                <span class="pit-bench pit-bench-3"></span>
+                <span class="pit-bench pit-bench-4"></span>
+                <span class="pit-bench pit-bench-5"></span>
+                <span class="pit-bench pit-bench-6"></span>
+                <span class="pit-floor"></span>
+                <span class="pit-survey-orbit"></span>
+                <span class="pit-scan-line"></span>
               </div>
-              <div class="mine-orbit orbit-mid">
-                <div class="orbit-sat sat-cyan"></div>
-              </div>
-              <div class="mine-orbit orbit-inner">
-                <div class="orbit-sat sat-copper"></div>
-              </div>
-              <div class="mine-polyhedron">
-                <div class="facet facet-1"></div>
-                <div class="facet facet-2"></div>
-                <div class="facet-core"></div>
-              </div>
+              <div class="pit-caption"><i></i> Open-pit digital twin</div>
               <div class="mine-sparkle sparkle-1">✦</div>
               <div class="mine-sparkle sparkle-2">✦</div>
               <div class="mine-sparkle sparkle-3">✧</div>
