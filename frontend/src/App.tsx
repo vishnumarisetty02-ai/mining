@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { BackendAnimProvider, useAnimSignals } from './BackendAnimContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import CanvasBackground from './CanvasBackground';
 import { Sidebar } from './components/Sidebar';
@@ -97,7 +98,9 @@ function adaptAudit(a: AuditEntry): AuditRecord {
 // APP
 // ══════════════════════════════════════════════════════════════════════════════
 
-export default function App() {
+// Inner component so it can consume the context
+function AppInner() {
+  const { alertColorRgb, backendOnline: animOnline } = useAnimSignals();
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [backendOnline, setBackendOnline] = useState<boolean>(false);
 
@@ -128,6 +131,11 @@ export default function App() {
 
   // ── Poll backend health ──────────────────────────────────────────────────
 
+  // Sync CSS variable for background aurora color with backend alert state
+  useEffect(() => {
+    document.documentElement.style.setProperty('--anim-alert-rgb', alertColorRgb);
+  }, [alertColorRgb]);
+
   useEffect(() => {
     const tick = async () => {
       const online = await checkHealth();
@@ -143,7 +151,7 @@ export default function App() {
     tick();
     const id = setInterval(tick, 6000);
     return () => clearInterval(id);
-  }, [loadLiveData]);
+  }, [loadLiveData, animOnline]);
 
   // ── Upload handler ────────────────────────────────────────────────────────
 
@@ -363,5 +371,13 @@ export default function App() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BackendAnimProvider>
+      <AppInner />
+    </BackendAnimProvider>
   );
 }
