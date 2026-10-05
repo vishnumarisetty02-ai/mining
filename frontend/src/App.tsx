@@ -237,7 +237,15 @@ export default function App() {
       <div className="bg-aurora-glow-1" />
       <div className="bg-aurora-glow-2" />
       <div className="bg-aurora-glow-3" />
+      <div className="bg-aurora-glow-4" />
+      <div className="bg-aurora-glow-5" />
       <div className="bg-cyber-grid-overlay" />
+      {/* New background layers */}
+      <div className="bg-scan-line" />
+      <div className="bg-float-orb-1" />
+      <div className="bg-float-orb-2" />
+      <div className="bg-float-orb-3" />
+      <div className="bg-corner-vignette" />
 
       {/* Sidebar */}
       <Sidebar
