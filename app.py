@@ -1912,7 +1912,7 @@ def render_visual_system(active_page: str):
             color-scheme: dark;
             --geo-canvas: #0b1218;
             --geo-panel: #111c26;
-            --geo-card: rgba(20, 32, 43, 0.88);
+            --geo-card: rgba(17, 30, 41, 0.76);
             --geo-card-hover: rgba(27, 43, 56, 0.96);
             --geo-border: rgba(189, 207, 220, 0.1);
             --geo-border-glow: rgba(0, 240, 181, 0.32);
@@ -1978,14 +1978,17 @@ def render_visual_system(active_page: str):
         .stApp {
             position: relative;
             isolation: isolate;
+            min-height: 100vh;
             overflow: hidden;
-            background:
+            background-image:
                 radial-gradient(ellipse 90% 50% at 85% -5%, rgba(0, 240, 181, 0.075), transparent 60%),
                 radial-gradient(ellipse 70% 40% at 5% 25%, rgba(0, 216, 246, 0.055), transparent 55%),
+                linear-gradient(rgba(137, 174, 190, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(137, 174, 190, 0.07) 1px, transparent 1px),
                 linear-gradient(175deg, #0b1218 0%, #0e1720 48%, #121d27 100%);
-            background-size: 180% 180%, 170% 170%, 100% 100%;
-            background-position: 0% 0%, 100% 100%, 0% 0%;
-            animation: ambient-drift 48s ease-in-out infinite alternate;
+            background-size: 180% 180%, 170% 170%, 64px 64px, 64px 64px, 100% 100%;
+            background-position: 0% 0%, 100% 100%, 0 0, 0 0, 0 0;
+            animation: ambient-drift 68s ease-in-out infinite alternate;
         }
         .stApp::before,
         .stApp::after {
@@ -1999,7 +2002,7 @@ def render_visual_system(active_page: str):
             opacity: 0.3;
             z-index: -1;
             pointer-events: none;
-            animation: glow-orb 20s ease-in-out infinite alternate;
+            animation: glow-orb 34s ease-in-out infinite alternate;
         }
         .stApp::before {
             top: -12rem;
@@ -2011,6 +2014,138 @@ def render_visual_system(active_page: str):
             left: -10rem;
             background: radial-gradient(circle, rgba(0, 216, 246, 0.26), rgba(0, 216, 246, 0.05) 52%, transparent 70%);
             animation-delay: 2.5s;
+        }
+        .mine-ambient-scene {
+            position: absolute;
+            inset: 0;
+            z-index: auto;
+            overflow: hidden;
+            perspective: 1000px;
+            pointer-events: none;
+            isolation: isolate;
+        }
+        [data-testid="stMainBlockContainer"] [data-testid="stElementContainer"]:has(.mine-ambient-scene) {
+            position: fixed !important;
+            inset: 0;
+            z-index: 0;
+            width: 100vw;
+            height: 100vh;
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none;
+        }
+        [data-testid="stMainBlockContainer"] [data-testid="stElementContainer"]:not(:has(.mine-ambient-scene)) {
+            position: relative;
+            z-index: 1;
+        }
+        .ambient-grid-plane {
+            position: absolute;
+            left: -20%;
+            bottom: -48%;
+            width: 140%;
+            height: 82%;
+            transform: rotateX(68deg);
+            transform-origin: center top;
+            background-image:
+                linear-gradient(rgba(0, 240, 181, 0.14) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 181, 0.14) 1px, transparent 1px);
+            background-size: 72px 72px;
+            opacity: 0.28;
+            mask-image: linear-gradient(to top, black 12%, transparent 88%);
+            animation: ambient-grid-drift 64s linear infinite;
+        }
+        .ambient-particles {
+            position: absolute;
+            inset: 0;
+            opacity: 0.62;
+            background-image:
+                radial-gradient(circle, rgba(0, 240, 181, 0.9) 1.4px, transparent 2.4px),
+                radial-gradient(circle, rgba(0, 216, 246, 0.82) 1.3px, transparent 2.4px),
+                radial-gradient(circle, rgba(245, 186, 107, 0.72) 1.2px, transparent 2.2px);
+            background-size: 137px 173px, 211px 197px, 263px 229px;
+            background-position: 14px 32px, 76px 108px, 129px 52px;
+            mask-image: linear-gradient(110deg, transparent 4%, black 38%, black 72%, transparent 98%);
+            animation: ambient-particle-drift 96s linear infinite;
+        }
+        .ambient-orbit {
+            position: absolute;
+            width: 190px;
+            height: 74px;
+            border: 1px solid rgba(0, 216, 246, 0.34);
+            border-radius: 50%;
+            box-shadow: 0 0 32px rgba(0, 216, 246, 0.16), inset 0 0 24px rgba(0, 216, 246, 0.08);
+            transform-style: preserve-3d;
+        }
+        .ambient-orbit::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 12%;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--geo-emerald);
+            box-shadow: 0 0 14px rgba(0, 240, 181, 0.9);
+        }
+        .ambient-orbit-a {
+            top: 28%;
+            right: 9%;
+            animation: ambient-orbit-drift 58s ease-in-out infinite alternate;
+        }
+        .ambient-orbit-b {
+            bottom: 17%;
+            left: 10%;
+            width: 140px;
+            height: 56px;
+            border-color: rgba(245, 186, 107, 0.19);
+            animation: ambient-orbit-drift 72s ease-in-out infinite alternate-reverse;
+        }
+        .ambient-orbit-b::after {
+            background: var(--geo-copper);
+            box-shadow: 0 0 14px rgba(245, 186, 107, 0.8);
+        }
+        .ambient-cube {
+            position: absolute;
+            width: 38px;
+            height: 38px;
+            transform-style: preserve-3d;
+            animation: ambient-cube-turn 72s linear infinite;
+        }
+        .ambient-cube i {
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(0, 240, 181, 0.44);
+            background: linear-gradient(145deg, rgba(0, 240, 181, 0.12), rgba(0, 216, 246, 0.05));
+            box-shadow: inset 0 0 14px rgba(0, 240, 181, 0.12);
+        }
+        .ambient-cube i:nth-child(1) { transform: translateZ(19px); }
+        .ambient-cube i:nth-child(2) { transform: rotateY(180deg) translateZ(19px); }
+        .ambient-cube i:nth-child(3) { transform: rotateY(90deg) translateZ(19px); }
+        .ambient-cube i:nth-child(4) { transform: rotateY(-90deg) translateZ(19px); }
+        .ambient-cube i:nth-child(5) { transform: rotateX(90deg) translateZ(19px); }
+        .ambient-cube i:nth-child(6) { transform: rotateX(-90deg) translateZ(19px); }
+        .ambient-cube-a {
+            top: 24%;
+            left: 12%;
+            opacity: 0.52;
+            animation-duration: 86s;
+        }
+        .ambient-cube-b {
+            right: 25%;
+            bottom: 15%;
+            width: 24px;
+            height: 24px;
+            opacity: 0.38;
+            animation-duration: 104s;
+            animation-direction: reverse;
+        }
+        .ambient-cube-b i { border-color: rgba(0, 216, 246, 0.34); }
+        .ambient-dark-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: rgba(5, 10, 16, 0.4);
+            pointer-events: none;
         }
 
         /* Top Header */
@@ -2109,11 +2244,11 @@ def render_visual_system(active_page: str):
             background:
                 radial-gradient(ellipse at 80% 40%, rgba(0, 240, 181, 0.12), transparent 45%),
                 radial-gradient(ellipse at 15% 90%, rgba(0, 216, 246, 0.08), transparent 40%),
-                linear-gradient(135deg, rgba(16, 26, 36, 0.96) 0%, rgba(10, 17, 24, 0.94) 100%);
+                linear-gradient(135deg, rgba(16, 26, 36, 0.76) 0%, rgba(10, 17, 24, 0.72) 100%);
             background-size: 180% 180%, 170% 170%, 100% 100%;
             background-position: 0% 50%, 100% 50%, 0% 0%;
             box-shadow: var(--geo-shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            animation: hero-aura-drift 34s ease-in-out infinite alternate;
+            animation: hero-aura-drift 46s ease-in-out infinite alternate;
             transform-style: preserve-3d;
             perspective: 1200px;
         }
@@ -2159,6 +2294,7 @@ def render_visual_system(active_page: str):
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             color: var(--geo-text-body); font-size: 0.82rem; font-weight: 600;
             backdrop-filter: blur(12px);
+            transform-style: preserve-3d;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .mine-step.is-active {
@@ -2168,12 +2304,17 @@ def render_visual_system(active_page: str):
         }
         .mine-step.is-active span { color: var(--geo-copper); }
         .mine-step:hover {
-            transform: translateY(-3px);
+            transform: perspective(900px) translateY(-4px) rotateX(3deg);
             border-color: rgba(255, 255, 255, 0.16);
         }
         .mine-step span {
             display: block; margin-bottom: 0.25rem; color: var(--geo-emerald);
             font-size: 0.65rem; font-weight: 800; letter-spacing: 0.12em;
+            transform: translateZ(10px);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mine-step:hover span {
+            transform: translateZ(20px);
         }
 
         /* SaaS KPI Cards */
@@ -2185,10 +2326,11 @@ def render_visual_system(active_page: str):
             background: var(--geo-card);
             box-shadow: var(--geo-shadow-card);
             backdrop-filter: blur(14px);
+            transform-style: preserve-3d;
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .saas-kpi:hover {
-            transform: translateY(-4px);
+            transform: perspective(1000px) translateY(-5px) rotateX(2deg) rotateY(-1deg);
             border-color: var(--geo-border-glow);
             box-shadow: var(--geo-shadow-hover);
         }
@@ -2204,6 +2346,10 @@ def render_visual_system(active_page: str):
             border: 1px solid rgba(0, 240, 181, 0.24); border-radius: 12px;
             background: rgba(0, 240, 181, 0.08);
             color: var(--geo-emerald); font-size: 1rem;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .saas-kpi:hover .saas-kpi-icon {
+            transform: translateZ(18px) rotate(-5deg);
         }
         .saas-kpi-value {
             font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
@@ -2424,7 +2570,7 @@ def render_visual_system(active_page: str):
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
-            animation: scene-float 38s ease-in-out infinite alternate;
+            animation: scene-float 52s ease-in-out infinite alternate;
             will-change: transform;
         }
         .mine-orbit {
@@ -2546,6 +2692,23 @@ def render_visual_system(active_page: str):
             50% { transform: translate3d(-16px, 16px, 0) scale(1.05); opacity: 0.42; }
             100% { transform: translate3d(18px, -18px, 0) scale(1.12); opacity: 0.3; }
         }
+        @keyframes ambient-grid-drift {
+            from { background-position: 0 0, 0 0; }
+            to { background-position: 0 144px, 144px 0; }
+        }
+        @keyframes ambient-particle-drift {
+            from { background-position: 14px 32px, 76px 108px, 129px 52px; }
+            to { background-position: 14px -141px, 287px 108px, -134px 281px; }
+        }
+        @keyframes ambient-orbit-drift {
+            0% { transform: rotateX(64deg) rotateY(-14deg) translate3d(0, 0, 0); }
+            50% { transform: rotateX(72deg) rotateY(8deg) translate3d(-12px, 8px, 24px); }
+            100% { transform: rotateX(60deg) rotateY(20deg) translate3d(10px, -8px, -12px); }
+        }
+        @keyframes ambient-cube-turn {
+            from { transform: rotateX(-18deg) rotateY(0deg) rotateZ(0deg) translateZ(0); }
+            to { transform: rotateX(342deg) rotateY(360deg) rotateZ(45deg) translateZ(24px); }
+        }
         @keyframes hero-aura-drift {
             0% { background-position: 0% 50%, 100% 50%, 0% 0%; }
             100% { background-position: 100% 40%, 0% 60%, 0% 0%; }
@@ -2598,6 +2761,9 @@ def render_visual_system(active_page: str):
             .mine-hero { align-items: flex-start; }
             .mine-hero-mark { position: absolute; right: -1.6rem; bottom: -1rem; opacity: .48; }
             .mine-hero-copy { position: relative; z-index: 2; }
+            .ambient-grid-plane { opacity: 0.1; }
+            .ambient-particles { opacity: 0.4; }
+            .ambient-orbit { opacity: 0.55; }
             .mine-workflow { grid-template-columns: 1fr 1fr; }
             [data-testid="stMainBlockContainer"] {
                 padding: 1rem .8rem 2rem !important;
@@ -2613,6 +2779,21 @@ def render_visual_system(active_page: str):
             }
         }
         </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """
+        <div class="mine-ambient-scene" aria-hidden="true">
+          <div class="ambient-grid-plane"></div>
+          <div class="ambient-particles"></div>
+          <div class="ambient-orbit ambient-orbit-a"></div>
+          <div class="ambient-orbit ambient-orbit-b"></div>
+          <div class="ambient-cube ambient-cube-a"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="ambient-cube ambient-cube-b"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="ambient-dark-overlay"></div>
+        </div>
         """,
         unsafe_allow_html=True,
     )

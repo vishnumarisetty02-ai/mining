@@ -1056,3 +1056,176 @@
 .workflow-container-3d.mode-3d-perspective .workflow-stage-viewport {
   filter: drop-shadow(0 0 40px rgba(0, 240, 181, 0.06)) drop-shadow(0 0 80px rgba(0, 216, 246, 0.04));
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   NEW 3D COMPONENT STYLES
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Node card: allow overflow for detail panel ── */
+.node-card-3d {
+  overflow: visible;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 1.2rem 1.8rem;
+  gap: 0;
+}
+
+/* ── 3D Extruded Bottom Edge ── */
+.card-extrude-edge {
+  position: absolute;
+  bottom: -6px;
+  left: 6px;
+  right: -6px;
+  height: 100%;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(0, 240, 181, 0.04) 0%, rgba(0, 216, 246, 0.02) 100%);
+  border: 1px solid rgba(0, 240, 181, 0.12);
+  z-index: -1;
+  transform: translateZ(-8px);
+  pointer-events: none;
+  transition: all 0.4s ease;
+}
+
+.node-card-3d:hover .card-extrude-edge {
+  bottom: -10px;
+  left: 10px;
+  right: -10px;
+  border-color: rgba(0, 240, 181, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 240, 181, 0.12);
+}
+
+/* ── Holographic Stage Number Badge ── */
+.stage-badge-3d {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0, 240, 181, 0.18), rgba(0, 216, 246, 0.12));
+  border: 1px solid rgba(0, 240, 181, 0.45);
+  color: var(--geo-emerald);
+  font-size: 0.65rem;
+  font-weight: 900;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.02em;
+  box-shadow: 0 0 14px rgba(0, 240, 181, 0.3), inset 0 0 8px rgba(0, 240, 181, 0.1);
+  backdrop-filter: blur(8px);
+  animation: badgePulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes badgePulseGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(0,240,181,0.25), inset 0 0 6px rgba(0,240,181,0.08); }
+  50%       { box-shadow: 0 0 22px rgba(0,240,181,0.55), 0 0 40px rgba(0,216,246,0.2), inset 0 0 12px rgba(0,240,181,0.18); }
+}
+
+/* ── Node Detail Expand Panel ── */
+.node-detail-panel {
+  overflow: hidden;
+  width: 100%;
+}
+
+.detail-panel-inner {
+  border-top: 1px solid rgba(0, 240, 181, 0.15);
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+}
+
+.detail-metric-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.detail-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dm-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--geo-text-muted);
+}
+
+.dm-value {
+  font-size: 0.82rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--geo-text-head);
+}
+
+/* ── Node Status Column ── */
+.node-status-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  animation: statusIconPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes statusIconPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%       { opacity: 1; transform: scale(1.18); }
+}
+
+/* ── Split node cards in 3-col grid: reset column-direction ── */
+.split-nodes-3d .node-card-3d {
+  flex-direction: column;
+  text-align: center;
+  padding: 1.25rem 1rem;
+  gap: 0;
+}
+
+.split-nodes-3d .node-icon-3d-wrap {
+  margin: 0 auto;
+}
+
+.split-nodes-3d .node-header-line {
+  justify-content: center;
+}
+
+.split-nodes-3d .node-telemetry-row {
+  justify-content: center;
+}
+
+.split-nodes-3d .node-status-col {
+  display: none;
+}
+
+.split-nodes-3d .stage-badge-3d {
+  width: 26px;
+  height: 26px;
+  font-size: 0.58rem;
+}
+
+/* ── Scrollable viewport ── */
+.workflow-container-3d > div[style*="overflow-y: auto"] {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 240, 181, 0.3) transparent;
+}
+
+.workflow-container-3d > div[style*="overflow-y: auto"]::-webkit-scrollbar {
+  width: 4px;
+}
+
+.workflow-container-3d > div[style*="overflow-y: auto"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.workflow-container-3d > div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 181, 0.3);
+  border-radius: 999px;
+}
+
+/* ── Enhanced entrance animation on visible cards ── */
+@keyframes card3dEntrance {
+  0%   { opacity: 0; transform: perspective(700px) rotateX(-25deg) translateY(28px) scale(0.92); filter: blur(5px); }
+  70%  { filter: blur(0); }
+  100% { opacity: 1; transform: perspective(700px) rotateX(0deg) translateY(0) scale(1); }
+}
